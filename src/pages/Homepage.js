@@ -1,9 +1,9 @@
 import React from "react";
-import "./HomepageStyles.scss";
+import "./HomePageStyles.scss";
 import Directory from "../components/Directory";
 import { Link } from "react-router-dom";
 
-function Homepage(props) {
+function HomePage(props) {
   return (
     <div className="homepage">
       <Directory />
@@ -11,4 +11,4 @@ function Homepage(props) {
   );
 }
 
-export default Homepage;
+export default HomePage;
