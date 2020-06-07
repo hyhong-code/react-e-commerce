@@ -7,6 +7,12 @@ export const selectCollections = createSelector(
   (shop) => shop.collections
 );
 
+export const selectCollectionsForOverview = createSelector(
+  [selectCollections],
+  // converts hashtable values into array
+  (collections) => Object.values(collections)
+);
+
 export const selectCollection = (collectionUrlParam) =>
   createSelector(
     [selectCollections],
