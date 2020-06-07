@@ -16,15 +16,14 @@ class App extends Component {
     const { setCurrentUser } = this.props;
     // https://firebase.google.com/docs/auth/web/manage-users
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      console.log("userAuth", userAuth);
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
         await userRef.onSnapshot((snapShot) => {
           // set current user to user just logged in
           setCurrentUser({
-            currentUser: {
-              id: snapShot.id,
-              ...snapShot.data(),
-            },
+            id: snapShot.id,
+            ...snapShot.data(),
           });
         });
       } else {
