@@ -7,7 +7,7 @@ import CartIcon from "./CartIcon";
 import CartDropdown from "./CartDropdown";
 import "./HeaderStyles.scss";
 
-function Header({ currentUser, hidden, toggleCartHidden }) {
+function Header({ currentUser, hidden }) {
   return (
     <div className="header">
       <Link className="logo-container" to="/">
