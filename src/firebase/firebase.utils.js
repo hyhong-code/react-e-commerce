@@ -28,4 +28,33 @@ provider.setCustomParameters({ prompt: "select_account" });
 // https://firebase.google.com/docs/auth/web/google-signin
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
+// store authenticated user to db
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  if (!userAuth) return; // user logged out
+
+  // references are used for CRUD
+  const userRef = firestore.doc(`users/${userAuth.uid}`);
+
+  // snapshots are actual data
+  const snapshot = await userRef.get();
+
+  // if user not in db, save user to db
+  if (!snapshot.exists) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+    try {
+      await userRef.set({
+        displayName,
+        email,
+        createdAt,
+        ...additionalData,
+      });
+    } catch (error) {
+      console.log("error creating user", error.message);
+    }
+  }
+
+  return userRef;
+};
+
 export default firebase;

@@ -5,7 +5,7 @@ import ShopPage from "./pages/ShopPage";
 import Header from "./components/Header";
 import SignInSignUpPage from "./pages/SignInSignUpPage";
 import "./App.css";
-import { auth } from "./firebase/firebase.utils";
+import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
 class App extends Component {
   constructor(props) {
@@ -19,11 +19,24 @@ class App extends Component {
 
   componentDidMount() {
     // https://firebase.google.com/docs/auth/web/manage-users
-    this.unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
-      // open subscription, just like onClick event... it can be called later
-      this.setState({ currentUser: user }, () =>
-        console.log(this.state.currentUser)
-      );
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+        await userRef.onSnapshot((snapShot) => {
+          // set current user to user just logged in
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data(),
+            },
+          });
+
+          console.log(this.state);
+        });
+      } else {
+        // set current user state to null after user log out
+        this.setState({ currentUser: userAuth });
+      }
     });
   }
 
