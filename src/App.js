@@ -51,7 +51,6 @@ class App extends Component {
             render={(routeProps) => <HomePage {...routeProps} />}
           />
           <Route
-            exact
             path="/shop"
             render={(routeProps) => <ShopPage {...routeProps} />}
           />
